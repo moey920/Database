@@ -65,6 +65,43 @@
 
 ## 테이블에 데이터 삽입하기
 
+> INSERT : 관계형 데이터베이스의 테이블에 값을 저장하는 명령
+
+- INSERT문의 기본 문법 : ‘햄릿’ 책 데이터를 book 테이블에 추가
+    ```
+    INSERT(명령) INTO book(id, title, author, publisher)(테이블 컬럼)
+    VALUES('3', '햄릿', ＇윌리엄 셰익스피어', '엘리스 출판')(추가할 데이터);
+    ```
+    - 팁 : 컬럼을 명시하지 않으면 순서대로 값을 삽입
+        ```
+        INSERT INTO book(id, title, author, publisher)
+        VALUES('3', '햄릿', ＇윌리엄 셰익스피어', '엘리스 출판');
+        ```
+
 ## 테이블의 데이터 수정하기
 
+> UPDATE :  관계형 데이터베이스의 테이블에서 이미 저장된 값을 수정하는 명령
+
+- UPDATE 문의 기본 문법 : 책 제목(title)이 ‘돈키호테’인 데이터의 제목(title)을 ‘돈키호테 1’로 변경
+    ```
+    UPDATE(명령) book(테이블)
+    SET title = '돈키호테 1'(변경할 값)
+    WHERE title = '돈키호테';(조건)
+    ```
+
 ## 테이블의 데이터 삭제하기
+
+> DELETE : 관계형 데이터베이스의 테이블에서 이미 저장된 값을 삭제하는 명령
+
+- DELETE 문의 기본 문법 : 제목이 ‘돈키호테 1’인 책 데이터를 book 테이블에서 삭제
+    ```
+    DELETE(명령)
+    FROM book(테이블)
+    WHERE title = '돈키호테 1';(조건)
+    ```
+    - 팁 : WHERE 조건이 없을 시 모든 데이터 삭제**(조삼!)**
+        ```
+        DELETE
+        FROM book
+        WHERE title = '돈키호테 1';
+        ```

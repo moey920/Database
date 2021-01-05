@@ -8,13 +8,6 @@
 - 대부분의 DB System은 Server-Client 구조를 이용한다.
 - DB를 사용하려면 반드시 인증 시스템을 거쳐야 한다.(보안)
 
-## SQL(구조화된 질의하는 언어)
-
-##### Structured
-##### Query
-##### Language
-- 프로그래밍 언어에 SQL을 활용하여 자동화할 수 있다.
-
 ## DB의 종류
 
 ### 관계형 DB (Relational DB)
@@ -54,6 +47,28 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 
 ### 문서형 DB (Document DB)
 
+
+
+
+## SQL(구조화된 질의하는 언어)
+
+##### Structured
+##### Query
+##### Language
+- 프로그래밍 언어에 SQL을 활용하여 자동화할 수 있다.
+
+### CREATE
+- CREATE TABLE 테이블이름(attribute이름 자료형 null여부 추가조건 등);
+
+### READ
+- SELECT 어트리뷰트명 FROM 테이블명 WHERE 상세조건;
+
+### UPDATE
+#### INSERT
+- INSERT INTO 테이블이름 (어트리뷰트 이름) VALUES(값);
+
+### DELETE
+
 ## DB 공부방법
 
 ### CRUD 사용방법을 체크하기
@@ -61,7 +76,6 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 - Read
 - Update
 - Delete
-
 
 ## 추가정보
 - DB 랭킹 사이트 : https://db-engines.com/en/ranking

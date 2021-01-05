@@ -29,10 +29,12 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 표를 만드려면 Base가 필요하다.
 
 #### 로컬 환경에서 MySQL 사용하기
-- MySQL Server
-- MySQL Client
--- MySQL Monitor
--- MySQL workbench
+##### MySQL Server
+- Clinet를 이용해서 Server에 접속하려면 Hostname, ID와 Password가 필요하다.
+
+##### MySQL Client
+- MySQL Monitor를 이용하여 Server에 connect하기(bitnami의 WAMP를 설치하여 이용)
+- MySQL workbench : GUI 방식으로 MySQL을 이용할 수 있음.
 
 ### 그래프형 DB (Graph DB)
 
@@ -52,3 +54,4 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 ## 추가정보
 - DB 랭킹 사이트 : https://db-engines.com/en/ranking
 - 네트워크에 접속된 각각의 장치 : host
+- port : 

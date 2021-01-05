@@ -6,6 +6,7 @@
 - 데이터 타입을 지정해서 선언, 삽입한다.(Java에서 변수 선언 시 데이터 타입을 지정하는 것과 원리가 동일하다)
 - 식별자(Key), 인덱스(Index)를 이용한다.
 - 대부분의 DB System은 Server-Client 구조를 이용한다.
+- DB를 사용하려면 반드시 인증 시스템을 거쳐야 한다.(보안)
 
 ## DB의 종류
 
@@ -50,3 +51,4 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 
 ## 추가정보
 - DB 랭킹 사이트 : https://db-engines.com/en/ranking
+- 네트워크에 접속된 각각의 장치 : host

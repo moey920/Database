@@ -13,6 +13,12 @@
 ## DB의 종류
 
 ### 관계형 DB (Relational DB)
+관계형 DB란 : 하나 이상의 테이블로 이루어지며 서로 연결된 데이터를 가지고 있음 관계형 데이터베이스는 SQL을 통해 제어 가능
+
+### 테이블의 구성 요소
+- Column(컬럼) = Tuple = 속성 = 세로줄
+- Record = attribute = row = 가로줄
+- 모든 테이블은 고유의 이름으로 구분
 #### 종류
 - Oracle
 - MySQL
@@ -27,6 +33,7 @@ Excle은 자료형에 관계 없이 삽입 가능하다.(추출할 때 데이터
 관계형 DB는 지정한 자료형만 삽입할 수 있다.
 관계형 DB는 SQL이라는 언어를 활용해서 다룬다.
 공통점 : 표를 기반으로 한다.
+관계형 DB는 표(테이블)를 가지고 있다.
 
 #### 개념
 Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
@@ -41,11 +48,6 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 - MySQL Monitor를 이용하여 Server에 connect하기(bitnami의 WAMP를 설치하여 이용)
 - MySQL workbench : GUI 방식으로 MySQL을 이용할 수 있음.
 
-### 그래프형 DB (Graph DB)
-
-### 계층형 DB
-
-### 문서형 DB (Document DB)
 
 ## 중복 관리하기
 - 중복이 발생하는 컬럼을 떼어내어 새로운 테이블로 만든다.
@@ -53,6 +55,14 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 - 정보를 보관할 땐 정보를 나누어 효율적으로 보관하면서도, 검색할 땐 한번에 합쳐져있는 것처럼 효율적으로 검색한다
 - join : 두 개의 테이블을 합침
 - A는 B를 알고, B는 A를 모를 때 A와 B를 join한다면, B가 A의 부모(parent) 테이블이다.
+
+> 비관계형 DB
+
+### 그래프형 DB (Graph DB)
+
+### 계층형 DB
+
+### 문서형 DB (Document DB)
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
@@ -131,6 +141,18 @@ DESC Employees
 ```
 - Describe의 약자
 
+> SELECT 문의 기본 문법
+```
+SELECT(명령) title, author(검색할 컬럼) FROM book(테이블);
+```
+
+> DISTINCT 문의 기본 문법
+```
+SELECT DISTINCT title, author FROM book;
+```
+- 뒤에 나오는 컬럼의 중복을 제거하고 보여준다.
+- 검색할 데이터 앞에 DISTINCT를 입력하여 사용
+- **주의!** _DISTINCT 뒤에 2개 이상의 컬럼을 적으면_, 한 쪽 컬럼에 중복이 있어도 다른 쪽 컬럼의 값이 다르면 다르게 취급
 
 ## 조건을 추가하여 검색하기
 

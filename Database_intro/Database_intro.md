@@ -156,4 +156,60 @@ SELECT DISTINCT title, author FROM book;
 
 ## 조건을 추가하여 검색하기
 
+> 조건을 만드는 방법 
+```
+WHEHE
+```
+- 검색하고자 하는 데이터의 조건을 설정할 수 있는 명령
+
+> SELECT/WHERE문의 기본 문법
+```
+SELECT * FROM book WHERE title = '돈키호테';
+```
+- 제목이 '돈키호테'인 책 데이터를 book 테이블에서 검색
+
+
 ## 여러 개의 조건을 추가하기
+
+### 비교 연산자
+- >, <, >=, <=, =, !=
+
+> 비교 연산자를 이용하여 검색
+```
+SELECT *
+FROM score
+WHERE korean >= 90;
+```
+
+### 복합 조건 연산자
+- AND, &&
+A AND B
+A && B : A 그리고 B를 모두 만족하는 값
+- OR, ||
+A OR B
+A || B : A 또는 B인 값
+- NOT, !
+NOT A
+!A : A가 아닌 값
+
+> 복합 조건 연산자를 이용하여 검색
+```
+SELECT *
+FROM score
+WHERE korean >= 90 OR math > 80;
+```
+
+### 기타 연산자
+- BETWEEN 
+A BETWEEN 10 AND 20 : A가 10과 20 사이에 포함된 값
+- IN
+A IN B : B에 A가 포함된 값
+- NOT IN 
+A NOT IN B : B에 A가 포함되지 않은 값
+
+> 기타 연산자를 이용하여 검색
+```
+SELECT *
+FROM score
+WHERE math BETWEEN 80 AND 90;
+```

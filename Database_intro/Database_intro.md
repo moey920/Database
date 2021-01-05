@@ -55,3 +55,4 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 - DB 랭킹 사이트 : https://db-engines.com/en/ranking
 - 네트워크에 접속된 각각의 장치 : host
 - port : 약속된 서버마다의 포트 번호가 존재한다.(웹:80, MySQL:3306)
+- 스키마(scheme) or database : 테이블의 집합체(바탕)

@@ -58,16 +58,20 @@ Structured : 구조화 되어 있다. (tuple과 attribute이 있는 표)
 - 프로그래밍 언어에 SQL을 활용하여 자동화할 수 있다.
 
 ### CREATE
-- CREATE TABLE 테이블이름(attribute이름 자료형 null여부 추가조건 등);
+- CREATE TABLE 테이블명(attribute이름 자료형 null여부 추가조건 등);
 
 ### READ
 - SELECT 어트리뷰트명 FROM 테이블명 WHERE 상세조건;
 
 ### UPDATE
 #### INSERT
-- INSERT INTO 테이블이름 (어트리뷰트 이름) VALUES(값);
+- INSERT INTO 테이블명 (어트리뷰트 이름) VALUES(값);
+#### UPDATE
+- UPDATE 테이블명 SET 바꾸려는 칼럼이름='' WHEHE 애트리뷰트이름='' 
 
 ### DELETE
+- DELETE 테이블명 WHERE 필드이름=데이터값
+- Truncate 테이블명 : 테이블 전체 삭제
 
 ## DB 공부방법
 

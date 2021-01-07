@@ -84,6 +84,7 @@
 ## 웹 페이지에 python을 이용하여 DB를 표로 출력 (Flask)
 
 - Python -m pip install flask
+
 - 웹 서버를 만드는 코드
     ```
     from flask import Flask
@@ -92,6 +93,45 @@
     @app.route('/')
     def hello_world():
         return "hi"
+
+    if __name__ == '__main__':
+        app.run(debug=True)
+    ```
+
+    - Static 웹 서버 : 사용자가 요청한 정보만 보여준다.(만들어둔 상품을 파는 것과 같다.)
+
+    - Dynamic 웹 서버 : 사이트가 로드될 때마다 동적으로 동작한다.
+
+        - 요청이 들어올 때마다 제조하여 판매한다. 
+        - 커스터마이징에 유리하다.
+
+- 웹 서버에 DB 연동하기
+    ```
+    import random
+    from flask import Flask
+
+    import pymysql
+    db = pymysql.connect(
+        user='root', 
+        passwd='', 
+        host='127.0.0.1', 
+        db='mydb', 
+        charset='utf8'
+    )
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+
+    app = Flask(__name__)
+
+    @app.route('/')
+    def hello_world():
+        sql = "SELECT * FROM topic"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        output = ''
+        for row in result:
+            print(row['id'], row['title'], row['description'])
+            output = output + row['title'] +'<br>'
+        return output
 
     if __name__ == '__main__':
         app.run(debug=True)

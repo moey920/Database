@@ -39,18 +39,48 @@
 
 ## MySQL 사용법
 
-1. 터미널에서 사용할 디렉토리 접근 후 
-```
-mysql.exe -uroot -p
-```
-입력 후 그냥 엔터를 치면 mysql에 접근된다.
-2. MySQL Workbench로 GUI 환경에서 이용할 수도 있다.
+    - 터미널에서 사용할 디렉토리 접근 후 
+        ```
+        mysql.exe -uroot -p
+        ```
+        입력 후 그냥 엔터를 치면 mysql에 접근된다.
+
+    - MySQL Workbench로 GUI 환경에서 이용할 수도 있다.
 
 
+# 물리적 데이터 모델링에 대하여
+
+    - MySQL Workbench에서 논리적 모델링 생성 후 Database옵션 클릭 -> Forward Engineer 클릭
+
+    > Reverse Engineering : 제품을 뜯어 설계도를 만듬
+
+    > Forward Engineering : 설계도를 기반으로 제품을 만듬
+
+    - MySQL Server 생성 후 연결, workbench에서 다양한 작업 가능
 
 
+# Python과 MySQL의 연동
 
+    - 파이썬에 Python -m pip install MyPySQL
+    - DB를 읽어와서 출력하는 코드 입력
+        ```
+        import pymysql
 
+        db = pymysql.connect(
+            user='root', 
+            passwd='', 
+            host='127.0.0.1', 
+            db='mydb', 
+            charset='utf8'
+        )
+
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+
+        sql = "SELECT * FROM topic"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        print(result)
+        ```
 
 
 

@@ -127,10 +127,11 @@
         sql = "SELECT * FROM topic"
         cursor.execute(sql)
         result = cursor.fetchall()
-        output = ''
+        output = '<style>td{border:1px solid red;}</style><table>'
         for row in result:
             print(row['id'], row['title'], row['description'])
-            output = output + row['title'] +'<br>'
+            output = output + '<tr><td>'+ str(row['id']) +'</td><td>'+ row['title'] +'</td></tr>'
+        output = output + '</table>'
         return output
 
     if __name__ == '__main__':

@@ -108,6 +108,14 @@ pymongo.MongoClient("mongodb://localhost:27017/")
 
 2. 데이터베이스 생성하기
 
+* MongoDB에서 데이터베이스를 만드는 것은 굉장히 간단합니다. 바로, use 명령어를 사용하는 것입니다.
+
+```
+>use  Library
+#생성 완료 시
+switched to db Library
+```
+
 MongoDB가 연결된 객체를 이용해 데이터베이스를 생성할 수 있습니다. 만약 **연결된 객체의 변수명이 connection**이라고 할 때, 데이터베이스를 생성하기 위해서는 아래의 코드처럼 작성되어야 합니다.
 
 ```

@@ -13,6 +13,10 @@ Document형태로 데이터가 저장됩니다. 여기에서 나오는 **Documen
 3. Graph DB **(Neo4j)**
 데이터를 **노드 간의 관계**로 표현한 DB입니다.
 
+* 데이터 간의 관계를 정의하지 않는다.
+
+RDB(관계형 데이터베이스)가 데이터 관계를 Foreign Key 등으로 정의하고 이용해 join 등 연산을 한다고 가정을 한다면, NoSQL은 데이터 간의 관계를 정의하지 않습니다. 데이터 테이블은 그저 하나의 데이블이며 각 테이블 간의 관계를 정의하지 않고 일반적으로 테이블 간의 join 또한 불가능합니다.
+
 ## MongoDB의 특징
 
 - 고정된 테이블 스키마를 갖지 않습니다.
@@ -69,5 +73,45 @@ Database - Collection - Document 3단 구조
 | 튜플(Row) | 도큐먼트(Document) | 
 
 ▶ MongoDB 공식 홈페이지 소개글 <https://www.mongodb.com/what-is-mongodb>
+
+----
+# MongoDB의 CRUD
+
+## MongoDB Create
+
+대부분의 데이터베이스에는 CRUD라는 개념이 있습니다. Create, Read, Update, Delete의 약자로 데이터 베이스의 자료를 생성, 조회, 수정, 삭제하는 기능을 뜻합니다.
+
+MongoDB에는 ```create database```라는 명령어가 존재하지 않습니다. MongoDB는 데이터베이스 생성 명령을 제공하고 있지 않습니다. MongoDB에서는 **처음에 정의된 collection에 값을 저장할 때 MongoDB가 자동으로 데이터베이스를 생성**하므로 MongoDB에서는 우리가 **직접 수동으로 생성할 필요가 없습니다**. 기존의 SQL을 사용하셨던 분들이라면 이 부분에서 굉장히 어색해하시고, 이상해하실 것 같습니다. 그렇다면 어떻게 생성을 해야 할까요?
+```
+{
+    "id" : 10,
+    "name"(Field name) : "Elice"(Field value)
+}
+```
+
+
+위 도큐먼트의 **Field name은 id와 name**이고, 각각의 **value는 10과 Elice**입니다. 이러한 **도큐먼트 묶음이 MongoDB에서 collection**을 구성하게 됩니다.
+
+## Database 생성
+
+MongoDB에서 첫번째 기본적인 단계는 데이터베이스와 컬렉션을 배치하는 것입니다. 데이터베이스는 모든 컬렉션을 저장하는데 사용되면 컬렉션은 모든 도큐먼트를 저장하는데 사용됩니다.
+
+1. 데이터베이스를 생성할 포트 연결하기
+MongoDB에서 데이터베이스를 만드는 것은 굉장히 간단합니다. 파이썬에서 MongoDB와 상호작용 하기 위해서는 pymongo 라이브러리를 사용해야 합니다. pymongo를 import한 뒤 아래의 코드를 이용해 MongoDB를 연결할 수 있습니다. 27017은 MongoDB를 연결할 때 디폴트로 사용하는 포트 번호입니다.
+
+pymongo.MongoClient("mongodb://localhost:27017/")
+2. 데이터베이스 생성하기
+MongoDB가 연결된 객체를 이용해 데이터베이스를 생성할 수 있습니다. 만약 연결된 객체의 변수명이 connection이라고 할 때, 데이터베이스를 생성하기 위해서는 아래의 코드처럼 작성되어야 합니다.
+
+db = connection["생성할 데이터베이스"]
+마찬가지로 연결된 객체 connection에 list_database_names() 메소드를 이용하면 생성되어 있는 데이터베이스 목록을 확인할 수 있습니다. 다만 직접 확인해 보면 출력된 데이터베이스 목록에 library 데이터베이스가 없어 아래처럼 기본 데이터베이스만 출력이 됩니다. 데이터베이스에 내용이 없으면 실제로 생성되지 않기 때문입니다.
+
+['admin', 'config', 'local']
+Collection 생성
+MongoDB에서 컬렉션을 만들려면 데이터베이스를 사용하고 만들려는 컬렉션의 이름을 지정합니다. 위에서 생성한 db 변수로 컬렉션을 생성하기 위해서는 아래의 코드처럼 작성되어야 합니다.
+
+col = db["생성할 컬렉션"]
+그리고 데이터베이스 객체db에 list_collection_names() 함수를 이용하면 컬렉션 목록을 확인할 수 있습니다. 다만 직접 확인해 보면 아무것도 출력이 되지 않습니다.
+컬렉션 역시 데이터가 없으면 실제로 생성되지 않기 때문입니다.
 
 

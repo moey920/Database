@@ -77,7 +77,7 @@ Database - Collection - Document 3단 구조
 ----
 # MongoDB의 CRUD
 
-## MongoDB Create
+# 1. MongoDB Create
 
 대부분의 데이터베이스에는 CRUD라는 개념이 있습니다. Create, Read, Update, Delete의 약자로 데이터 베이스의 자료를 생성, 조회, 수정, 삭제하는 기능을 뜻합니다.
 
@@ -139,4 +139,62 @@ col = db["생성할 컬렉션"]
 그리고 데이터베이스 객체 db에 list_collection_names() 함수를 이용하면 컬렉션 목록을 확인할 수 있습니다. 다만 직접 확인해 보면 아무것도 출력이 되지 않습니다.
 컬렉션 역시 데이터가 없으면 실제로 생성되지 않기 때문입니다.
 
+1. createCollection()사용하여 생성
+collection을 생성할 때는 ```db.createCollection(name, [options])``` 명령어를 사용합니다.
+
+2. insert() 사용하여 생성
+MongoDB는 document를 collection에 삽입하는 ```insert()``` 명령을 제공합니다.
+
+## 데이터베이스 생성 실습
+
+```
+import pymongo
+
+# 데이터베이스를 연결하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+
+# library 데이터베이스를 만드세요.
+db = connection['library']
+
+# 컬렉션 생성
+col = db["books"]
+
+# 데이터를 삽입하는 코드: 데이터베이스가 잘 생성되었는지 확인하기 위해서는 반드시 아래 주석을 해제하세요.
+data = col.insert_one({ "title": "Harry Potter and the Deathly Hallows", "author": "Joanne Kathleen Rowling","publisher": "Bloomsbury Publishing" ,"date_received": "2017-07-21"})
+
+
+# 데이터베이스 목록을 reuslt 리스트에 저장하세요..
+result = connection.list_database_names()
+result2 = db.list_collection_names()
+
+# 값을 잘 저장하였는지 확인하기 위한 코드입니다. 수정하지 마세요!
+print(result, result2)
+```
+
+# 2. MongoDB Find
+
+이번 이론에서는 CRUD 중 R(Read)파트를 알아보겠습니다. 데이터베이스에서 데이터를 가져오거나 가져오는 방법은 쿼리를 사용하여 수행하게 됩니다. 쿼리 작업을 수행하는 동안 데이터베이스에서 특정 데이터를 검색하는데 사용할 수 있는 기준이나 조건을 사용할 수도 있습니다.
+
+MongoDB는 데이터베이스에서 도큐먼트를 검색하는데 사용되는 find() 메소드를 제공합니다. 기본적인 쿼리 문법은 아래와 같습니다. 또한, find() 메소드는 구조화되지 않은 방식으로 모든 도큐먼트를 표현합니다. (조금 더 디테일하게 Find하는 방법은 2장에서 다루게 됩니다.)
+
+#문법
+db.COLLECTION_NAME.find()
+저번 MongoDB Create 이론에서 예시를 들었던 컬렉션을 찾는다고 가정할 때, 아래와 같은 쿼리를 작성할 수 있습니다.
+
+모든 코드는 MongoDB Javascript 명령 셸에서 실행됩니다.
+
+
+
+Find One
+MongoDB의 컬렉션에서 데이터를 선택하려면 find_one()메소드를 사용할 수 있습니다.
+
+#문법
+컬렉션이름.find_one()
+Find All
+MongoDB의 테이블에서 데이터를 선택하려면 find()메소드를 사용할 수도 있습니다. find()메소드를 사용하면 선택 항목의 모든 항목을 출력합니다.
+
+#문법
+컬렉션이름.find()
+💡 Tip!
+위에서 다루었던 메소드를 사용하여 보고자 하는 데이터를 형식적으로 출력하고 싶을 때 pprint()메소드를 사용하여 출력해보세요.
 

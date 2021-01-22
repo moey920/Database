@@ -230,3 +230,30 @@ for i in col.find().sort("title",1) :
 
 ### 5번 소스코드
 
+```
+import pymongo
+import csv
+
+
+# 데이터를 삽입하는 코드입니다. 수정하지 마세요!
+client = pymongo.MongoClient('localhost', 27017)
+
+db = client["netflix"]
+col = db["titles"]
+
+reader = open('netflix_titles.csv', 'r')
+data = csv.DictReader(reader, ('show_id', 'type', 'title', 'director', 'cast', 'country', 'date_added', 'release_year', 'rating', 'duration', 'listed_in', 'description')) 
+
+result = col.insert_many(data)
+
+# 작품의 제목을 입력받고 해당하는 작품 정보를 출력하세요.
+# 작품 제목 입력받기
+tmp = input()
+# title 필드가 tmp와 동일한 것을 검색하라는 쿼리
+query = { "title": { "$eq": tmp } }
+
+# 동등 비교 처리 연산자를 포함한 콜렉션 검색 후 커서 객체를 출력하는 구문
+for i in col.find(query) :
+    print(i)
+```
+

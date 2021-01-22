@@ -21,7 +21,7 @@ sort()메소드는 데이터를 정렬할 때 사용하는 메소드입니다.
 > sort() 메소드는 Cursor객체에서 사용되며, 컬렉션.find()를 통해 반환되는 것이 Cursor객체입니다.
 ```
 #문법
-cursor.sort( { KEY: value } )
+cursor.sort("KEY", value)
 ```
 
 ```

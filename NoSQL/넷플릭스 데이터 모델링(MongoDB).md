@@ -87,4 +87,61 @@ csv파일을 읽고 컬렉션에 데이터를 추가해봅시다.
 
 > Tips :마지막 코드 컬렉션.find_one()을 통해 출력되는 것은 첫 번째 데이터인 필드명입니다.
 
+### 2번 소스코드
+
+```
+# csv 라이브러리를 import하세요.
+import pymongo
+import csv
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+client = pymongo.MongoClient('localhost', 27017)
+
+db = client["netflix"]
+col = db["titles"]
+
+# netflix_titles.csv을 읽기 모드로 여세요. 파일을 불러오는 open() 메소드를 이용해 파일을 엽니다
+reader = open('netflix_titles.csv', 'r')
+
+# csv 파일의 데이터를 딕셔너리 형태로 읽으세요. csv.DictReader 이용
+# MongoDB에 넣을 딕셔너리 형태로 데이터를 저장할 수 있습니다.
+data = csv.DictReader(reader, ('show_id', 'type', 'title', 'director', 'cast', 'country', 'date_added', 'release_year',
+ 'rating', 'duration', 'listed_in', 'description'))
+
+# 읽은 데이터를 titles 컬렉션에 삽입하세요.
+result = col.insert_many(data)
+
+# 목록이 잘 들어갔는지 확인하기 위한 코드입니다. 수정하지 마세요!
+print(col.find_one())
+```
+
+## 3번 실습
+
+넷플릭스에 새로운 작품이 추가되었습니다. 따라서 csv 파일에 없는 새로운 작품 정보를 데이터베이스에 삽입해봅시다.
+
+기존의 작품 정보는 유지한 채 아래 데이터만 추가하면 됩니다.
+
+| 필드명 | 데이터 |
+|:---:|:---:|
+| show_id | 95889578 |
+| type | 'Movie' |
+| title | 'Sweet Home' |
+| director | 'Eungbok Lee' |
+| cast | 'Gang Song' |
+| country | 'Korea' |
+| date_added | '18-Dec-20' |
+| release_year | '2020' |
+| rating | 'TV-MA' |
+| duration | '497min' |
+| listed_in | 'Thrillers' |
+| description | 'A teenage boy shutting off the world and stuck in a room. Hyunsoo comes out of the world. Humans turned into monsters. You still have to live. I'm still a person. You have to fight with your neighbors.' |
+
+### 3번 지시사항
+
+1. 새로운 데이터 딕셔너리를 만들고 컬렉션에 삽입하세요. 삽입한 결과를 new_add_data 변수에 저장하세요.
+
+> Tips
+- 딕셔너리에 데이터 저장시 작은 따옴표를 주의하세요. show_id를 제외한 필드는 모두 문자열입니다.
+- ObjectId는 다를 수 있으며 채점 기준에서는 제외됩니다.
 

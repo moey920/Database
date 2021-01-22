@@ -9,8 +9,10 @@ Netflix Movies and TV Shows <https://www.kaggle.com/shivamb/netflix-shows>
 
 본격적으로 데이터를 처리하기 전 먼저 데이터베이스와 컬렉션을 생성해봅시다.
 
-지시사항
-pymongo 라이브러리를 이용해 파이썬과 MongoDB를 연결하세요.
-netflix 데이터베이스를 생성하세요.
-titles 컬렉션을 생성하세요.
-생성한 컬렉션에 아무런 데이터를 넣은 후, 생성이 잘 되었는지 확인하기 위해 데이터베이스 목록과 컬렉션 목록을 result1, result2 변수에 저장하세요.
+## 지시사항
+1. pymongo 라이브러리를 이용해 파이썬과 MongoDB를 연결하세요.
+2. netflix 데이터베이스를 생성하세요.
+3. titles 컬렉션을 생성하세요.
+4. 생성한 컬렉션에 아무런 데이터를 넣은 후, 생성이 잘 되었는지 확인하기 위해 데이터베이스 목록과 컬렉션 목록을 result1, result2 변수에 저장하세요.
+
+

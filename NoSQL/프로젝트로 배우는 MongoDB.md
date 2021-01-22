@@ -372,8 +372,63 @@ mydoc = mycol.find(query)
 { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 }
 ```
 
-# 여러가지 메소드 활용하기
+## 배열 쿼리 연산자
 
-# 넷플릭스 데이터 모델링
+### $all연산자
+$all연산자 필드의 값이 지정된 모든 요소를 포함하는 배열인 도큐먼트를 선택합니다. 아래의 배열에서 value1, value2 등 모든 값을 가지고 있어야 합니다.
+```
+#문법
+{  < field > :  {  $ all :  [  < value1 >  ,  < value2 >  ...  ]  }  }
+```
 
-# Flask & MongoDB 연동하기
+### $elemMatch연산자
+지정된 조건에 일치하는 요소가 적어도 한 개 이상의 필드를 포함합니다.
+```
+#문법
+{ <field>: { $elemMatch: { <query1>, <query2>, ... } } }
+```
+
+```
+#예시
+
+#servey컬렉션에 문서 삽입
+survey.insert_many( [
+   { "_id": 1, "results": [ { "product": "abc", "score": 10 },
+                            { "product": "xyz", "score": 5 } ] },
+   { "_id": 2, "results": [ { "product": "abc", "score": 8 },
+                            { "product": "xyz", "score": 7 } ] },
+   { "_id": 3, "results": [ { "product": "abc", "score": 7 },
+                            { "product": "xyz", "score": 8 } ] },
+   { "_id": 4, "results": [ { "product": "abc", "score": 7 },
+                            { "product": "def", "score": 8 } ] }
+] )
+
+# $eleMatch를 사용하여 쿼리가 일치한 도큐먼트를 출력하게 됩니다.
+survey.find(
+   { "results": { "$elemMatch": { "product": "xyz", "score": { "$gte": 8 } } } }
+)
+
+#결과
+{ "_id" : 3, "results" : [ { "product" : "abc", "score" : 7 },
+                           { "product" : "xyz", "score" : 8 } ] }
+```
+
+```
+import pymongo
+
+# 데이터베이스와 Collection을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["mart"]
+col = db["goods"]
+
+# goods 컬렉션에서 지시사항 조건에 맞게 출력하세요.
+for i in col.find({ "results": { "$elemMatch": { "product": "xyz", "score": { "$gte": 8 } } } }) :
+    print(i)
+```
+
+### $size연산자
+$size 연산자는 이름에서 알 수있다시피 배열의 길이(length) 값과 일치하는 필드를 선택합니다.
+```
+#문법
+{ field: { $size: <value> } }
+```

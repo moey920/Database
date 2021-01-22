@@ -203,3 +203,66 @@ MongoDB의 테이블에서 데이터를 선택하려면 find()메소드를 사�
 💡 Tip!
 > 위에서 다루었던 메소드를 사용하여 보고자 하는 데이터를 형식적으로 출력하고 싶을 때 **pprint()**메소드를 사용하여 출력해보세요.
 
+## 콜렉션의 모든 데이터 출력하기
+
+컬렉션 객체에 find() 메소드를 이용해 데이터 검색을 할 수 있습니다. 컬렉션.find()을 통해 반환되는 것은 MongoDB의 Cursor객체 입니다.
+
+이 Cursor객체를 이용해서 데이터, 즉 도큐먼트를 확인할 수 있습니다.
+
+```
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# books 컬렉션에 들어있는 책들을 출력하세요.
+for doc in col.find() :
+    print(doc)
+```
+
+## 데이터 보기 좋게 출력하기(파이썬 pprint 라이브러리 이용)
+```
+import pymongo
+from pprint import pprint
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# pprint를 이용해 데이터를 보기 좋게 출력하세요.
+
+for doc in col.find() :
+    pprint(doc)
+```
+
+> 결과
+```
+{'_id': ObjectId('600a2ce81c88a6828dc0daca'),
+ 'author': 'William Shakespeare',
+ 'date_received': '2012-04-01',
+ 'title': 'Romeo and Juliet'}
+{'_id': ObjectId('600a2ce81c88a6828dc0dacb'),
+ 'author': 'Miguel de Cervantes Saavedra',
+ 'date_received': '2015-03-31',
+ 'title': 'Don Quixote'}
+{'_id': ObjectId('600a2ce81c88a6828dc0dacc'),
+ 'author': 'Antoine de Saint-Exupery',
+ 'date_received': '2018-12-21',
+ 'title': 'The Little Prince'}
+{'_id': ObjectId('600a2ce81c88a6828dc0dacd'),
+ 'author': 'Joanne Kathleen Rowling',
+ 'date_received': '2017-06-26',
+ 'publisher': 'Bloomsbury Publishing',
+ 'title': "Harry Potter and the Philosopher's Stone"}
+{'_id': ObjectId('600a2ce81c88a6828dc0dace'),
+ 'author': 'John Ronald Reuel Tolkien',
+ 'date_received': '2014-07-29',
+ 'publisher': 'Allen & Unwin',
+ 'title': 'The Lord of the Rings'}
+```
+

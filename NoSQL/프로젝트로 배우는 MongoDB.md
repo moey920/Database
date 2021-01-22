@@ -216,20 +216,42 @@ for find_book in col.find({"$and":[ {"author":"Joanne Kathleen Rowling"}, {"date
 ## 요소 연산자
 
 ### $exists 연산자
-해당 필드가 존재해야 하는지 존재하지 않아야 하는지 여부를 결정합니다. 이 연산자는 **필드의 값이 없는 경우 값을 추가하지 위해서 주로 사용**이 됩니다.
-
+해당 필드가 존재해야 하는지 존재하지 않아야 하는지 여부를 결정합니다. 이 연산자는 **필드의 값이 없는 경우 값을 추가하기 위해서 주로 사용**이 됩니다.
+```
 #문법
 { 필드 명: { $exists: <boolean> } }
+```
+
+```
 #예시) age 필드의 값이 없는 경우를 조회
 query = { "age": { "$exists": false } }
-$type 연산자
+```
+
+```
+import pymongo
+
+# 데이터베이스와 Collection을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# books Collection에 들어있는 책들을 출력하세요.
+query = { "publisher": { "$exists": 'true' } }
+
+for i in col.find(query) :
+    print(i['title'])
+```
+
+### $type 연산자
 해당 필드의 자료형이 일치하는 도큐먼트를 선택합니다.
 
-선택 가능한 자료형
-double, string, object, array, binData, objectId, bool, date, null, regex, dbPointer, javascript, symbol, javascriptWithScope, int, timestamp, long, minKey, maxKey
-
+> 선택 가능한 자료형 : double, string, object, array, binData, objectId, bool, date, null, regex, dbPointer, javascript, symbol, javascriptWithScope, int, timestamp, long, minKey, maxKey
+```
 #문법
 { 필드 명: { $type: <BSON type> } }
+```
+
+```
 #예시) zipcode 필드의 타입이 string인 모든 도큐먼트를 조회
 
 #예시를 위한 가상의 데이터
@@ -249,19 +271,43 @@ mydoc = mycol.find(query)
 #결과
 { "_id" : 1, address : "2030 Martian Way", zipCode : "90698345" },
 { "_id" : 5, address : "104 Venus Drive", zipCode : ["834847278", "1893289032"]}
-평가 연산자
-$mod연산자
-나머지를 구하는 연산자입니다. 예를 들어, 번호가 짝수인 사람을 모두 찾는 경우에 사용이 됩니다.
+```
 
+
+## 평가 연산자
+
+### $mod연산자
+나머지를 구하는 연산자입니다. 예를 들어, 번호가 짝수인 사람을 모두 찾는 경우에 사용이 됩니다.
+```
 #문법
 { 필드 명: { $mod: [ divisor(나눌값), remainder(나머지) ] } }
+```
+
+```
 #예시) _id가 짝수인 값을 모두 조회
 query = { "_id": { "$mod": [2, 0] } }
 
 mydoc = mycol.find(query)
-$regex연산자
-정규표현식 조회를 가능하게 합니다. 아래 3가지 유형 중 하나로 사용하실 수 있습니다. ＄regex만 사용하셔도 되고, $options를 함께 사용하셔도 되고, 정규표현식(MongoDB는 UTF-8을 지원하는 Perl 호환 정규식 버전 8.42 를 사용합니다.)처럼 사용하셔도 됩니다.
+```
 
+```
+import pymongo
+
+# 데이터베이스와 Collection을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["profile"]
+col = db["people"]
+
+# prople Collection에 들어있는 책들을 출력하세요.
+query = { "_id": { "$mod": [2, 0] } }
+
+for doc in col.find(query) :
+    print(doc)
+```
+
+### $regex연산자
+정규표현식 조회를 가능하게 합니다. 아래 3가지 유형 중 하나로 사용하실 수 있습니다. ＄regex만 사용하셔도 되고, $options를 함께 사용하셔도 되고, 정규표현식(MongoDB는 UTF-8을 지원하는 Perl 호환 정규식 버전 8.42 를 사용합니다.)처럼 사용하셔도 됩니다.
+```
 #문법
 1번째 유형: { 필드 명: { $regex: /pattern/, $options: '<options>' } }
 2번째 유형: { 필드 명: { $regex: 'pattern', $options: '<options>' } }
@@ -284,9 +330,11 @@ mydoc = mycol.find(query)
 #결과
 { "_id" : 101, "sku" : "abc789", "description" : "First line\nSecond line" }
 { "_id" : 103, "sku" : "xyz789", "description" : "Multiple\nline description" }
-$text연산자
-텍스트 조회를 하는 연산자입니다. 이 연산자를 사용할 때는 제약사항이 많다는 점을 유의해야 합니다. 대표적으로 필드에 text index가 설정 되어 있어야 합니다. 이 연산자의 유용한 점은 꼭 정확한 텍스트가 아니더라도 유사한 텍스트를 찾아준다는 장점이 있습니다.
+```
 
+### $text연산자
+텍스트 조회를 하는 연산자입니다. 이 연산자를 사용할 때는 제약사항이 많다는 점을 유의해야 합니다. 대표적으로 필드에 text index가 설정 되어 있어야 합니다. 이 연산자의 유용한 점은 꼭 정확한 텍스트가 아니더라도 유사한 텍스트를 찾아준다는 장점이 있습니다.
+```
 #문법
 {
   $text:
@@ -296,6 +344,9 @@ $text연산자
       $caseSensitive(대소문자): <boolean>
     }
 }
+```
+
+```
 #예시) subject 필드의 값에 "coffee"라는 단어가 포함되어있는 데이터를 조회
 
 #예시를 위한 가상의 데이터
@@ -319,6 +370,7 @@ mydoc = mycol.find(query)
 { "_id" : 2, "subject" : "Coffee Shopping", "author" : "efg", "views" : 5 }
 { "_id" : 7, "subject" : "coffee and cream", "author" : "efg", "views" : 10 }
 { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 }
+```
 
 # 여러가지 메소드 활용하기
 

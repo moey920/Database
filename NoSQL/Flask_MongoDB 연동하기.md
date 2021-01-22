@@ -404,5 +404,29 @@ def netflix(show_id):
     return render_template('netflix.html', netflix=netflix)
 ```
 
-## 
+## 5번 실습
+
+넷플릭스 작품 검색하기
+
+작품의 제목을 검색하면 해당 작품의 정보를 출력하는 기능을 구현해봅시다.
+
+해당 기능을 구현하기 전에 Flask 페이지 이동에 자주 사용되는 ```redirect```와 ```url_for```에 대해 알아봅시다.
+
+리다이렉트(redirect)는 다시(re)+지시하다(direct)라는 뜻으로 **URL을 새롭게 지정**하는 것을 의미합니다. Flask에서는 아래와 같은 형태로 사용이 됩니다.
+```
+redirect(url_for('netflix', show_id=123456) )
+```
+
+위의 코드는 페이지를 netflix로 리다이렉트를 하는 것을 의미합니다. 동적 URL을 지정하기 위해서는 매개변수를 입력하며, 코드 실행 결과 **/netflix/123456** 페이지로 리다이렉트를 합니다.
+
+### 5번 지시사항
+1. 장식자를 이용해 /get URL에서 POST 방식인 get() 메소드를 만드세요.
+2. 검색창에 입력된 제목을 requeset.form을 이용해 전달받고, 컬렉션에서 해당 제목을 가진 작품을 검색하세요.
+3. 검색 결과가 존재하면 neflix/show_id URL이 리다이렉트 되도록 반환하세요. show_id는 검색된 작품의 show_id를 이용하면 됩니다.
+4. 검색 결과가 존재하지 않으면 render_template() 메소드로 main.html을 출력하고 아래 매개변수를 추가로 넘겨주세요.
+```error="Could not find that netflix"```
+
+> Tips
+- render_template() 메소드에서 error 매개변수를 지정하여 에러 메시지를 출력할 수 있습니다.
+- 검색이 제대로 안되는 경우 에러 메시지가 오타 없이 출력되어야 정답 처리 됩니다.
 

@@ -212,7 +212,7 @@ for x in orders.find():
 
 *  마치 python의 list.append()와 같이 새로운 데이터를 기존 데이터에 추가할 수 있다.
 
-### $pull 연산자
+### $pull 연산자(push와 반대)
 $pull은 기존의 **필드 배열로부터 제거하는 연산자**입니다.
 ```
 #문법
@@ -221,14 +221,116 @@ $pull은 기존의 **필드 배열로부터 제거하는 연산자**입니다.
 
 ```
 #예시: item.category의 필드 값이 brownies인 도큐먼트의 taste 필드의 creamy를 제거
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["cafe"]
+orders = db["menu"]
+
+# brownies의 taste 필드의 값을 제거하세요.
 orders.update_one(
-    { "item.category": "brownies" },
-    { "$pull": { "taste": "creamy" } }
+    { "item.category" : "brownies" },
+    { "$pull" : { "taste" : "sweet" } }
 )
+
+for x in orders.find():
+    print(x)
 ```
 
 * $pull 연산자는 기존의 데이터를 제거하는 연산자이다.
 
 지금까지 배운 메소드들을 이용한다면 MongoDB의 데이터를 update할 때 부족함은 없을 것입니다. 만약 여기에 해당되지 않는 핸들링이 필요하시다면 아래 메뉴얼을 참고하시길 바랍니다.
 <https://docs.mongodb.com/v3.2/reference/operator/update/>
+
+
+## $lookup 연산자
+MongoDB는 SQL이 아닌 NoSQL이기 때문에 **조인이라는 기능이 없습니다.** 하지만, 쿼리를 작성하다보면 조인이 필요한 경우가 있습니다. 이럴 때 우리는 ```$lookup``` 이라는 연산자를 활용하여 조인과 동일하게 컬렉션을 합칠 수 있습니다.
+```
+#문법
+{
+   $lookup:
+     {
+       from: <조인 할 컬렉션>,
+       localField: <입력할 도큐먼트의 필드>,
+       foreignField: <'from' 컬렉션의 도큐먼트에 있는 필드>,
+       as: <출력할 배열 필드>
+     }
+}
+```
+
+| 필드 | 의미 |
+|:---:|:---:|
+| from | 동일한 데이터베이스 내 수행할 컬렉션을 지정합니다. |
+| localField | 도큐먼트로부터 $lookup에 입력할 필드를 지정합니다. |
+| foreignField | **from 컬렉션에 있는 도큐먼트에서 필드를 지정**합니다. |
+| as | 입력 도큐먼트에 **추가될 새 배열 필드**를 지정합니다. |
+	
+### SQL과 비교하기
+```
+#MongoDB
+{
+   $lookup:
+     {
+       from: <collection to join>,
+       localField: <field from the input documents>,
+       foreignField: <field from the documents of the "from" collection>,
+       as: <output array field>
+     }
+}
+```
+
+```
+#SQL
+SELECT *, <output array field>
+FROM collection
+WHERE <output array field> IN (SELECT *
+                               FROM <collection to join>
+                               WHERE <foreignField>= <collection.localField>);
+```
+
+### 예시
+아래와 같이 orders 컬렉션과 inventory 컬렉션이 있다고 가정합니다. orders 컬렉션 내에 inventory 컬렉션을 넣어 Embedded Document 구조로 컬렉션을 만들어 보겠습니다.
+```
+db.orders.insert( [
+    { "_id": 1, "item": "cake", "price": 10, "quality": 3 },
+    { "_id": 2, "item": "cookies", "price": 5, "quality" : 2 },
+    { "_id": 3  }
+]);
+
+db.inventory.insert([
+    {"_id": 1, "store": "cake", "description": 1, "sweet": 10},
+    {"_id": 2, "store": "chocolate", "description": 2, "sweet": 15},
+    {"_id": 3, "store": "candy", "description": 3, "sweet": 13},
+    {"_id": 4, "store": "cookies", "description": 4, "sweet": 7},
+    {"_id": 5, "store": "sandwitch", "description": null},
+    {"_id": 6 }
+])
+```
+먼저, 두 컬렉션을 합쳐 새로운 컬렉션 하나를 생성합니다.
+```
+db.orders.aggregate([
+ {
+$lookup:
+        {
+          from: "inventory",
+          localField: "item",
+          foreignField: "store",
+          as: "inventory_docs"
+        }
+   },
+   { $out : "newcol1" }
+ ])
+```
+localField와 foreignField는 조인할 키 값이라고 생각하고, as는 새로 생성되는 필드명입니다. 이렇게 쿼리를 작성하게 되면 $out 메서드에 영향을 받아 newcol1 이라는 컬렉션이 생성됩니다. 그리고, 출력된 결과가 아래와 같이 입력 됩니다.
+```
+#결과값
+{ "_id" : 1, "item" : "cake", "price" : 10, "quantity" : 3, "inventory_docs" : [ { "_id" : 1, "store" : "cake", "description" : 1, "sweet" : 10 } ] }
+
+{ "_id" : 2, "item": "cookies", "price": 5, "quality" : 2, "inventory_docs" : [ {"_id": 4, "store": "cookies", "description": 4, "sweet": 7} ] }
+
+{ "_id" : 3, "inventory_docs" : [ {"_id": 5, "store": "sandwitch", "description": null},
+    {"_id": 6 } ] }
+```
 

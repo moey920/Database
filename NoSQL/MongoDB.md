@@ -266,3 +266,299 @@ for doc in col.find() :
  'title': 'The Lord of the Rings'}
 ```
 
+
+# MongoDB Insert
+
+생성된 컬렉션에 도큐먼트를 생성하는 방법은 기본적으로 가장 크게 3가지 입니다. 
+insert(), insertOne(), insertMany() 로 3가지입니다.
+
+## 1. ```insert_one()``` 메소드 사용하여 생성하기
+
+```
+#문법
+collection.insert_one( 컬렉션에 삽입할 도큐먼트 혹은 변수 ) 
+```
+
+```
+#예시
+mycol = mydb["customers"]
+
+mydict = { "name": "John", "address": "Highway 37" }
+
+x = mycol.insert_one(mydict)
+```
+
+## 2. ```insert_many()```메소드 사용하여 생성하기
+
+```
+#문법
+collection.insert_many( 컬렉션에 삽입한 도큐먼트 혹은 변수)
+```
+
+```
+#예시
+mycol = mydb["customers"]
+
+mylist = [
+  { "name": "Amy", "address": "Apple st 652"},
+  { "name": "Hannah", "address": "Mountain 21"},
+  { "name": "Michael", "address": "Valley 345"},
+  { "name": "Sandy", "address": "Ocean blvd 2"},
+  { "name": "Betty", "address": "Green Grass 1"},
+  { "name": "Richard", "address": "Sky st 331"},
+  { "name": "Susan", "address": "One way 98"},
+  { "name": "Vicky", "address": "Yellow Garden 2"},
+  { "name": "Ben", "address": "Park Lane 38"},
+  { "name": "William", "address": "Central st 954"},
+  { "name": "Chuck", "address": "Main Road 989"},
+  { "name": "Viola", "address": "Sideway 1633"}
+]
+
+x = mycol.insert_many(mylist)
+```
+
+## 데이터 삽입하기
+
+책 데이터를 삽입하기 위해서는 아래처럼insert_one() 함수를 사용하며 매개변수로 딕셔너리를 넘겨주면 됩니다.
+```
+data = 컬렉션.insert_one(딕셔너리)
+```
+
+또한 inserted_id를 이용해 삽입된 데이터의 id를 확인할 수 있습니다.
+```
+data.inserted_id
+```
+
+```
+import pymongo
+from pprint import pprint
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 딕셔너리 정의
+dic = { 
+    "title" : "Romeo and Juliet",
+    "author" : "William Shakespeare",
+    "data_received" : "2012-04-01"
+}
+
+# 데이터를 만들고 삽입하세요.
+data = col.insert_one(dic)
+
+# 삽입된 데이터 id를 이용해 데이터를 보기 좋게 출력하세요.
+pprint(data.inserted_id)
+```
+
+## 여러 데이터 삽입하기
+
+여러 데이터 삽입하기
+도서관에 새로운 책이 들어왔는데 이번에는 권수가 좀 많습니다. 따라서 이번에는 여러 책을 한 번에 데이터베이스에 삽입하려고 합니다.
+
+한 번에 여러 데이터를 삽입하기 위해서는 insert_many() 함수를 이용합니다. 또한 삽입할 딕셔너리 데이터를 리스트로 묶어 매개변수에 넘겨주어야 합니다.
+```
+data = 컬렉션.insert_many(리스트)
+```
+
+삽입된 데이터들의 id를 확인하려면 **컬렉션 객체에 inserted_ids**를 이용하면 됩니다. 그리고 아래처럼 반복문을 이용하면 각 id를 출력할 수 있습니다.
+```
+for book_id in data.inserted_ids:
+    print(book_id)
+```
+
+```
+import pymongo
+from pprint import pprint
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 새로 들어온 책들입니다. 리스트로 묶어 선언하세요.
+new_book1 = {"title": "Alice\'s Adventures in Wonderland", "author": "Lewis Carroll", "publisher": "Macmillan", "date_received": "2015-11-26"}
+new_book2 = {"title": "The Old Man and the Sea", "author": "Ernest Miller Hemingway","publisher": "Charles Scribner\'s Sons" ,"date_received": "2014-11-02"}
+new_book3 = {"title": "The Great Gatsby", "author": "Francis Scott Key Fitzgerald", "date_received": "2019-01-12"}
+
+new_book = [new_book1, new_book2, new_book3]
+
+# 데이터를 만들고 삽입하세요.
+data = col.insert_many(new_book)
+
+# 삽입된 데이터 id를 이용해 데이터를 보기 좋게 출력하세요.
+for book_id in data.inserted_ids:
+    pprint(book_id)
+```
+
+
+# MongoDB Update
+
+CRUD 중 U(Update)파트를 알아보겠습니다. 우리가 생성한 도큐먼트에 대해 수정을 하는 것입니다. MongoDB에서는 ```update_one()```과 ```update_many()```라는 메소드를 사용하여 수정 작업을 진행합니다.
+
+## 1. update_one()를 사용하여 수정하기
+
+update_one()는 기본적으로 단일 도큐먼트를 수정할 수 있습니다. 다만 유의해야 할 점이있습니다. 수정할 데이터는 데이터를 삽입할 때처럼 딕셔너리를 넣으면 되지만, 수정 내용은 ```$set``` 연산자를 명시해주어야 합니다.
+```
+#문법
+collection.update_one(수정할 데이터, 수정 내용)
+```
+
+```
+#예시) 주소 "Vally 345"에서 "Canyon 123"으로 수정
+
+query = { "address": "Valley 345" }
+newvalues = { "$set": { "address": "Canyon 123" } }
+
+mycol.update_one(query, newvalues)
+```
+
+## 2. update_many()를 사용하여 수정하기
+
+위 update_one()메소드는 하나의 데이터를 수정하는 방법입니다. 이번에는 여러 데이터를 한 번에 수정하는 update_many()메소드에 대해 학습하겠습니다.
+
+매개변수로 수정할 데이터와 수정 내용을 넘겨주어야 하는데, 수정 내용은 하나의 데이터를 수정할 때와 마찬가지로 ＄set연산자를 이용하여 넘겨주면 됩니다. 반대로 update_many()는 수정할 데이터가 여러 개이므로 정규 표현식을 이용해야 합니다. 정규 표현식을 이용하기 위해서 ＄regex연산자를 사용합니다.
+```
+#문법
+collection.update_many(수정할 데이터, 수정 내용)
+```
+
+```
+#예시) 주소가 문자"S"로 시작하는 모든 도큐먼트 수정
+query = { "address": { "$regex": "^S" } }
+newvalues = { "$set": { "name": "Minnie" } }
+
+mycol.update_many(query, newvalues)
+```
+
+
+# MongoDB Delete
+
+CRUD 중 D(Delete)파트를 알아보겠습니다. 도큐먼트를 지우는 작업은 매우 신중해야 합니다. MongoDB에서는 이전으로 되돌리는 **롤백 기능이 없기 때문**입니다.(롤백과 유사한 효과를 볼 수 있는 기능이 하나 있긴 합니다. 하지만, 저희는 아직 사용하지 않으니 공식 문서를 참고해주세요.)(oplog)
+deleteOne()은 매칭되는 첫번째 도큐먼트만 삭제하고, deleteMany()는 매치되는 모든 도큐먼트를 삭제한다는 차이가 있습니다.
+
+## 1. delete_one()를 사용하여 삭제하기
+
+하나의 데이터를 삭제하려면 delete_one()메소드를 사용해야 합니다. 만약, 쿼리에서 두 개 이상의 도큐먼트를 작성한다면 첫 번째 항목만 삭제됩니다.
+```
+#문법
+컬렉션.delete_one(삭제할 데이터)
+```
+
+```
+#예시) 주소가 "Mountain 21"인 도큐먼트 삭제
+query = { "address": "Mountain 21" }
+
+mycol.delete_one(query)
+```
+
+## 2. delete_many()를 사용하여 삭제하기
+
+delete_one()과 다르게 두 개 이상의 도큐먼트를 삭제하고 싶을 때 delete_many()메소드를 사용합니다.
+```
+#문법
+컬렉션.delete_many(삭제할 데이터)
+```
+
+```
+#예시) 주소가 문자 "S"로 시작하는 모든 도큐먼트 삭제
+query = { "address": {"$regex": "^S"} }
+
+mycol.delete_many(query)
+```
+
+## 데이터 수정하기
+
+```
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 잘못 입력된 책 제목을 수정하세요.
+# 두 변수에 바꾸고자하는 내용과, 바꿀 내용을 입력하여 update_one() 메서드의 매개변수로 줍니다.
+query = { "title": "The Rings of Lord" }
+newvalues = { "$set": { "title": "The Lord of the Rings" } }
+col.update_one(query, newvalues)
+
+# 책이 잘 수정되었는지 확인하는 코드입니다. 수정하지 마세요!
+for x in col.find():
+    print(x)
+```
+
+## 여러 데이터 수정하기
+
+```
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 잘못 입력된 책 작가를 수정하기 위한 딕셔너리를 만드세요.
+before = { "title": { "$regex": "^Harry Potter" } }
+
+# 잘못 입력된 책 작가를 수정하세요.
+update_book = { "$set": { "author": "Joanne Kathleen Rowling" } }
+a = col.update_many(before, update_book)
+
+# 몇 권의 책이 수정되었는지 확인하세요. 몇 개의 데이터가 바뀌었는지 확인하기 위해서는 수정 된 결과를 저장한 변수에 modified_count를 이용하면 됩니다.
+a.modified_count
+
+# 책이 잘 수정되었는지 확인하는 코드입니다. 수정하지 마세요!
+for x in col.find():
+    print(x)
+```
+
+## 하나의 데이터 삭제하기
+
+```
+import pymongo
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 사라진 책을 데이터베이스에서 삭제하세요.
+dic = { "title": "Alice's Adventures in Wonderland" }
+col.delete_one(dic)
+
+
+# 책이 잘 삭제되었는지 확인하는 코드입니다. 수정하지 마세요!
+for x in col.find():
+    print(x)
+```
+
+## 여러 데이터 삭제하기
+
+```
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["library"]
+col = db["books"]
+
+# 2015년에 받은 책을 삭제하기 위한 딕셔너리를 만드세요.
+dic = { "date_received": {"$regex": "^2015"} }
+
+# 데이터베이스에서 2015년도에 받았던 책들을 삭제하세요.
+delete_book = col.delete_many(dic)
+
+# 몇 권의 책이 삭제되었는지 확인하세요.
+delete_book.deleted_count
+
+# 책이 잘 삭제되었는지 확인하는 코드입니다. 수정하지 마세요!
+for x in col.find():
+    print(x)
+```

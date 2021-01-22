@@ -179,5 +179,42 @@ new_add_data = col.insert_one(sweet)
 print(col.find_one(new_add_data.inserted_id))
 ```
 
+## 4번 실습
+
+넷플릭스 데이터 읽기
+이번에는 저장한 데이터에서 원하는 데이터만 출력해보겠습니다.
+
+지금까지 나온 작품들이 무엇이 있는지 제목만 나열하려고 합니다.
+
+따라서 모든 데이터가 아닌 작품들의 제목만 오름차순으로 정렬해서 출력해볼까요?
+
+### 4번 지시사항
+1. titles 컬렉션에서 title을 기준으로 오름차순 정렬된 작품 전체 제목을 출력하세요.
+
+> Tips : 데이터가 많아 일부 작품이 생략되어 출력됩니다.
+
+### 4번 소스코드
+
+```
+import pymongo
+import csv
+
+
+# 데이터를 삽입하는 코드입니다. 수정하지 마세요!
+client = pymongo.MongoClient('localhost', 27017)
+
+db = client["netflix"]
+col = db["titles"]
+
+reader = open('netflix_titles.csv', 'r')
+data = csv.DictReader(reader, ('show_id', 'type', 'title', 'director', 'cast', 'country', 'date_added', 'release_year', 'rating', 'duration', 'listed_in', 'description')) 
+
+result = col.insert_many(data)
+
+# sort() 메소드를 이용하기 위해서는 먼저 Cursor객체가 필요하다.
+# 오름차순 정렬된 작품 전체 제목을 출력하세요.
+for i in col.find().sort("title",1) :
+    print(i['title'])
+```
 
 

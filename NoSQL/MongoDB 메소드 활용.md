@@ -160,6 +160,22 @@ orders.update_one( { "item.category" : "brownies" }, { "$unset" : { "nickName": 
 ```
 * 도큐먼트 자체가 삭제되는 것이 아님에 유의하자
 
+```
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["cafe"]
+orders = db["menu"]
+
+# brownies의 nickName 필드를 제거하세요.
+orders.update_one( { "item.category" : "brownies" }, { "$unset" : { "nickName": 1 } } )
+
+for x in orders.find():
+    print(x)
+```
+
 ### $push 연산자
 이 연산자는 단어 그대로 push! 무언가를 밀어 넣습니다. 이 연산자는 **새로운 데이터를 기존 데이터에 추가**할 수 있는 연산자입니다.
 
@@ -176,11 +192,25 @@ orders.update_one( { "item.category" : "brownies" }, { "$unset" : { "nickName": 
 
 ```
 #예시: item.category의 필드 값이 brownies인 도큐먼트의 taste 필드의 salty를 추가
+import pymongo
+
+
+# 데이터베이스와 컬렉션을 생성하는 코드입니다. 수정하지 마세요!
+connection = pymongo.MongoClient("mongodb://localhost:27017/")
+db = connection["cafe"]
+orders = db["menu"]
+
+# brownies의 taste 필드를 추가하세요.
 orders.update_one(
     { "item.category" : "brownies" },
     { "$push" : { "taste" : "salty" } }
 )
+
+for x in orders.find():
+    print(x)
 ```
+
+*  마치 python의 list.append()와 같이 새로운 데이터를 기존 데이터에 추가할 수 있다.
 
 ### $pull 연산자
 $pull은 기존의 **필드 배열로부터 제거하는 연산자**입니다.
@@ -196,6 +226,8 @@ orders.update_one(
     { "$pull": { "taste": "creamy" } }
 )
 ```
+
+* $pull 연산자는 기존의 데이터를 제거하는 연산자이다.
 
 지금까지 배운 메소드들을 이용한다면 MongoDB의 데이터를 update할 때 부족함은 없을 것입니다. 만약 여기에 해당되지 않는 핸들링이 필요하시다면 아래 메뉴얼을 참고하시길 바랍니다.
 <https://docs.mongodb.com/v3.2/reference/operator/update/>

@@ -1,5 +1,7 @@
 # 넷플릭스 데이터로 MongoDB 만들기
 
+## 1번 실습
+
 MongoDB는 앞선 수업에서 배운것처럼 NoSQL중 하나입니다. 이러한 MongoDB는 **문서지향(Document-Oriented) 데이터베이스**로 **고정된 테이블 스키마를 갖지 않는다는 특징**을 기억하시나요? 이러한 특징 때문에 MongoDB는 **확장성이 크고 관계를 정의하기 까다로운 빅데이터를 다룰 때 주로 사용**됩니다.
 
 아래 주소에 캐글에서 제공하는 넷플릭스 데이터가 있습니다.
@@ -9,10 +11,80 @@ Netflix Movies and TV Shows <https://www.kaggle.com/shivamb/netflix-shows>
 
 본격적으로 데이터를 처리하기 전 먼저 데이터베이스와 컬렉션을 생성해봅시다.
 
-## 지시사항
+### 1번 지시사항
 1. pymongo 라이브러리를 이용해 파이썬과 MongoDB를 연결하세요.
 2. netflix 데이터베이스를 생성하세요.
 3. titles 컬렉션을 생성하세요.
 4. 생성한 컬렉션에 아무런 데이터를 넣은 후, 생성이 잘 되었는지 확인하기 위해 데이터베이스 목록과 컬렉션 목록을 result1, result2 변수에 저장하세요.
+
+### 1번 소스 코드
+
+```
+# pymongo 라이브러리를 이용해 파이썬과 MongoDB를 연결하세요.
+import pymongo
+
+connection = pymongo.MongoClient('localhost', 27017)
+
+
+# netflix 데이터베이스를 생성하세요.
+db = connection["netflix"]
+
+# titles 컬렉션을 생성하세요.
+col = db["titles"]
+
+# 데이터를 삽입하는 코드
+data = col.insert_one({ "title": "Harry Potter and the Deathly Hallows", "author": "Joanne Kathleen Rowling","publisher": "Bloomsbury Publishing" ,"date_received": "2017-07-21"})
+
+# 데이터베이스와 컬렉션 목록을 reuslt 변수에 저장하세요.
+result1 = connection.list_database_names()
+result2 = db.list_collection_names()
+
+# 목록이 잘 들어갔는지 확인하기 위한 코드입니다. 수정하지 마세요!
+print(result1)
+print(result2)
+```
+
+## 2번 실습
+
+넷플릭스 데이터 삽입하기
+앞으로 처리해야 할 넷플릭스 데이터가 netflix_titles.csv에 들어있습니다.
+
+csv파일에 있는 데이터를 처리하기 위해 csv 라이브러리를 import해야 합니다. 그리고 open() 메소드를 이용해 파일을 엽니다.
+```
+reader = open('읽을 파일', 'r')
+```
+여기서 r은 읽기 모드로 파일을 연다는 것을 의미합니다.
+
+그리고 csv.DictReader를 이용해 MongoDB에 넣을 딕셔너리 형태로 데이터를 저장할 수 있습니다.
+```
+data = csv.DictReader(reader, ('필드1', '필드2', ...))
+```
+netflix_titles.csv 데이터는 아래와 같은 필드로 이루어져 있습니다.
+
+| 필드명 | 설명 |
+|:---:|:---:|
+| show_id | id |
+| type | 유형 |
+| title | 제목 |
+| director | 감독 |
+| cast | 배우 |
+| country | 국가 |
+| date_added | 넷플릭스에 추가된 일자 |
+| release_year | 실제 개봉 일자 |
+| rating | 상영 등급 |
+| duration | 상영 시간 |
+| listed_in | 장르 분류 |
+| description | 설명 |
+
+csv파일을 읽고 컬렉션에 데이터를 추가해봅시다.
+
+### 2번 지시사항
+
+1. csv 라이브러리를 import하세요.
+2. open() 메소드를 이용해 netflix_titles.csv을 읽기 모드로 여세요.
+3. csv.DictReader() 메소드를 이용해 csv 파일의 데이터를 딕셔너리 형태로 읽으세요.
+4. 읽은 데이터를 titles 컬렉션에 삽입하세요.
+
+> Tips :마지막 코드 컬렉션.find_one()을 통해 출력되는 것은 첫 번째 데이터인 필드명입니다.
 
 

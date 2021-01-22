@@ -26,7 +26,7 @@ cursor.sort( { KEY: value } )
 
 ```
 #예시
-orders.find().sort( { "item.category": 1 } )
+orders.find().sort("item.category",1)
 
 #결과: category은 알파벳 순서로 정렬되지만 중복 값을 포함하는 도큐먼트의 순서는 동일하지 않습니다.
 { "_id" : 6, "item" : { "category" : "brownies", "type" : "blondie" }, "amount" : 10 }
@@ -37,7 +37,7 @@ orders.find().sort( { "item.category": 1 } )
 { "_id" : 3, "item" : { "category" : "cookies", "type" : "chocolate chip" }, "amount" : 15 }
 
 #안정적인 정렬 결과를 얻으려면 고유한 값만 포함하는 필드를 추가하여 조회합니다.
-orders.find().sort( { "item.category": 1, "_id": 1 } )
+orders.find().sort([("item.category",1), ("_id",1)])
 ```
 
 ```
